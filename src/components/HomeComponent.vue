@@ -18,6 +18,9 @@
     LINE Profile
     <textarea>{{ profile }}</textarea>
   </div>
+  <div v-if="errorMsg">
+    <textarea>{{ errorMsg }}</textarea> 
+  </div>
   </div>
 </template>
 
@@ -28,6 +31,8 @@
 
   const profile = ref(null)
   const link = ref(`${location.href}About`)
+  const errorMsg = ref(null)
+
   //setup
   onMounted(async() => {
     console.log('onMounted')
@@ -98,7 +103,8 @@ async function getProfile(){
     return await liff.getProfile()
 
   } catch (error) {
-    throw new Error(`Check login failed: ${error.message}`);
+    errorMsg = error.message
+    console.error(`Check login failed:`, error);
   }
 }
 
