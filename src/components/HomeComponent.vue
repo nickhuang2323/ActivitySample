@@ -1,5 +1,5 @@
 <template>
-  <body @onload="locationHrefToAbout">
+  <body>
     <div>
     <h1>{{ message }}</h1>
   <div>
@@ -26,7 +26,7 @@
   <div v-if="errorMsg">
     <textarea>{{ errorMsg }}</textarea> 
   </div>
-
+  isInClient = {{ isInClient }}<br>
   <div v-if="aboutShowBtn">
     <button @click="locationHrefToAbout">前往活動頁面</button>
   </div>
@@ -36,7 +36,7 @@
 </template>
 
 <script setup>
-  import { ref, onMounted } from 'vue'
+  import { ref, onMounted, nextTick } from 'vue'
   import liff from '@line/liff';
   const message = ref('This is the Home page component1234')
 
@@ -60,16 +60,22 @@
 
         // location.replace('https://activitysample-673157003478.asia-east1.run.app/About');
         // this.$refs.hiddenButton.click();
-        location.href = 'About'
-        
-        setTimeout(() => { aboutShowBtn.value = true  }, 3000)
+        // location.href = 'About'
 
+        nextTick(() => {
+            console.log("页面加载完啦~")
+             location.href = '/About'
+          setTimeout(() => { aboutShowBtn.value = true  }, 3000)
+        })
 
         // location.href = '/About'
         // location.href = 'https://activitysample-673157003478.asia-east1.run.app/About'
       } catch (error) {
         errorMsg.value = error
       }
+
+
+
       // window.onload= () => {
       //     alert('onload success')
       //     this.$refs.hiddenButton.click();
