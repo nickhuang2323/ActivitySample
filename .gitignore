@@ -1,4 +1,6 @@
-ECHO is on.
 obj/ 
 Properties/ 
 bin/ 
+node_modules/
+.vs/
+ActivitySample.csproj.user
