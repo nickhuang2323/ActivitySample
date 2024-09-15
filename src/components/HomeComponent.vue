@@ -3,16 +3,23 @@
     <div>
     <h1>{{ message }}</h1>
   <div>
-    <button @click="Login">reLogin</button>
+    <button @click="isToLogin">isToLogin</button>
+  </div>
+  <div>
+    <button @click="reLogin">reLogin</button>
   </div>
   <div>
     <button @click="logout">logout</button>
+  </div>
+
+  <div>
+    <button @click="logoutReload">logout後重整</button>
   </div>
   <div>
     <button @click="getProfile">get porfile</button>
   </div>
   <div><input type="text" v-model="link"></div>
-  <div><button @click="locationHrefToPage">location.href</button></div>
+  <div><button @click="locationHrefToPage">前往活動頁面</button></div>
   <!-- <div><button @click="locationHrefToPage">location.href</button></div> -->
 
 
@@ -38,7 +45,7 @@
 <script setup>
   import { ref, onMounted, nextTick } from 'vue'
   import liff from '@line/liff';
-  const message = ref('This is the Home page component1234')
+  const message = ref('登入頁')
 
   const aboutShowBtn = ref(false)
   const profile = ref(null)
@@ -60,11 +67,11 @@
 
         // location.replace('https://activitysample-673157003478.asia-east1.run.app/About');
         // this.$refs.hiddenButton.click();
-        // location.href = 'About'
+        location.href = `About?token=${liff.getAccessToken()}`
 
         nextTick(() => {
             console.log("页面加载完啦~")
-             location.href = '/About'
+             location.href = `About?token=${liff.getAccessToken()}`
           setTimeout(() => { aboutShowBtn.value = true  }, 3000)
         })
 
@@ -141,14 +148,18 @@ async function init(){
 async function isLogin(){
   if (!liff.isLoggedIn()) {
     console.log('login')
-    Login({ redirectUri: location.href });
+    reLogin({ redirectUri: location.href });
     return false
   }
 
   return true
 }
 
-function Login(){
+async function isToLogin(){
+    liff.login({ redirectUri: location.href });
+}
+
+function reLogin(){
   try {
     liff.logout();
     console.log('logout success')
@@ -168,6 +179,14 @@ async function logout(){
   liff.logout()
 }
 
+
+async function logoutReload(){
+  profile.value = null;
+  errorMsg.value = null;
+  liff.logout()
+  location.href =  location.href
+}
+
 async function getProfile(){
   try {
     profile.value = await liff.getProfile()
@@ -180,8 +199,7 @@ async function getProfile(){
 }
 
 async function locationHrefToPage(){
-  console.log(link.value)
-  location.href = link.value
+  location.href = `About?token=${liff.getAccessToken()}`
 }
 
 function locationHrefToAbout(){
