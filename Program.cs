@@ -1,3 +1,5 @@
+using System;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
@@ -24,4 +26,8 @@ app.MapControllerRoute(
     name: "default",
     pattern: "{controller=Home}/{action=Index}/{id?}");
 
-app.Run();
+var port = Environment.GetEnvironmentVariable("PORT") ?? "8081";
+var url = $"http://0.0.0.0:{port}";
+app.Run(url);
+
+// app.Run();
