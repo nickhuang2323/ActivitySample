@@ -26,6 +26,10 @@
   <div v-if="errorMsg">
     <textarea>{{ errorMsg }}</textarea> 
   </div>
+
+  <div v-if="aboutShowBtn">
+    <button @click="locationHrefToAbout">前往活動頁面</button>
+  </div>
   </div>
   </body>
 
@@ -36,6 +40,7 @@
   import liff from '@line/liff';
   const message = ref('This is the Home page component1234')
 
+  const aboutShowBtn = ref(false)
   const profile = ref(null)
   const link = ref(`${location.href}About`)
   const errorMsg = ref(null)
@@ -53,9 +58,13 @@
     {
       try {
 
-        location.replace('https://activitysample-673157003478.asia-east1.run.app/About');
+        // location.replace('https://activitysample-673157003478.asia-east1.run.app/About');
         // this.$refs.hiddenButton.click();
-        // location.href = 'About'
+        location.href = 'About'
+        
+        setTimeout(() => { aboutShowBtn.value = true  }, 3000)
+
+
         // location.href = '/About'
         // location.href = 'https://activitysample-673157003478.asia-east1.run.app/About'
       } catch (error) {
@@ -170,7 +179,7 @@ async function locationHrefToPage(){
 }
 
 function locationHrefToAbout(){
-  location.href = link2.value
+  location.href = 'About'
 }
 
 
